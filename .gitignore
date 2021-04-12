@@ -14,5 +14,10 @@ gen/**
 .gradle/
 build/
 bin/
+cache/
+gradle/
+device.json
 # config
-*.cfg
+*.txt
+
+
