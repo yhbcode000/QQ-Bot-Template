@@ -74,14 +74,16 @@ public class QQbot {
         String endpoint = clientProps.getProperty("endpoint");
         String turingAPIKey = clientProps.getProperty("turingAPIKey");
         String userId = clientProps.getProperty("userId");
+        int QQid = Integer.parseInt(clientProps.getProperty("QQid"));
+        String QQpwd = clientProps.getProperty("QQpwd");
 
         // bot initialisation
-        Bot bot = BotFactory.INSTANCE.newBot(1095231268, "QW123qw123!", new BotConfiguration() {{
+        Bot bot = BotFactory.INSTANCE.newBot(QQid, QQpwd, new BotConfiguration() {{
             fileBasedDeviceInfo();
             setProtocol(MiraiProtocol.ANDROID_PAD);
         }});
         bot.login();
-        bot.getGroup(942848525).sendMessage("开始调试！");
+        bot.getGroup(942848525).sendMessage("Start!");
 
         // start listening action
         Listener listener = GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, event -> {
@@ -113,7 +115,6 @@ public class QQbot {
                 // reply
                 String reply = downMessaging.results.get(0).values.text;
                 event.getSubject().sendMessage(reply);
-
             } else {
 //                if (event.getSubject().equals(bot.getGroup(423779443))){
 //                    event.getSubject().sendMessage(event.getMessage());
@@ -123,7 +124,6 @@ public class QQbot {
 //                }
             }
         });
-
         //listener.complete();
     }
 }
