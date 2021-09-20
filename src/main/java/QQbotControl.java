@@ -64,7 +64,7 @@ public class QQbotControl {
         }
     }
 
-    // 添加对群功能位置
+    // TODO 添加对群功能位置
     private void groupEvents(GroupMessageEvent event) {
         if (event.getMessage().serializeToMiraiCode().startsWith("-r ")) {
             // 复读机功能
@@ -81,7 +81,7 @@ public class QQbotControl {
         }
     }
 
-    // 添加对个人功能位置
+    // TODO 添加对个人功能位置
     private void managerEvent(FriendMessageEvent event) {
         if (event.getSender().getId() == MQQid) {
             // 捧哏
