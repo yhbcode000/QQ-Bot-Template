@@ -64,6 +64,7 @@ public class QQbotControl {
         }
     }
 
+    // TODO 添加对群功能
     private void groupEvents(GroupMessageEvent event) {
         if (event.getMessage().serializeToMiraiCode().startsWith("-q ")) {
             // 图灵机器人回复功能
@@ -85,9 +86,10 @@ public class QQbotControl {
         }
     }
 
+    // TODO 添加对个人功能
     private void managerEvent(FriendMessageEvent event) {
         if (event.getSender().getId() == MQQid) {
-            // 捧哏
+            // 管理员的捧哏
             event.getSubject().sendMessage(new MessageChainBuilder()
                     .append(new QuoteReply(event.getMessage()))
                     .append("确实。")
