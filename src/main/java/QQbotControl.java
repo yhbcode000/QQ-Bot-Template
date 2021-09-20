@@ -64,9 +64,13 @@ public class QQbotControl {
         }
     }
 
-    // TODO 添加对群功能位置
     private void groupEvents(GroupMessageEvent event) {
-        if (event.getMessage().serializeToMiraiCode().startsWith("-r ")) {
+        if (event.getMessage().serializeToMiraiCode().startsWith("-q ")) {
+            // 图灵机器人回复功能
+            String message = event.getMessage().serializeToMiraiCode().substring(3);
+            String reply = this.getTuringAPIReply(message);
+            event.getSubject().sendMessage(reply);
+        } else if (event.getMessage().serializeToMiraiCode().startsWith("-r ")) {
             // 复读机功能
             event.getSubject().sendMessage(new MessageChainBuilder()
                     .append(new QuoteReply(event.getMessage()))
@@ -81,7 +85,6 @@ public class QQbotControl {
         }
     }
 
-    // TODO 添加对个人功能位置
     private void managerEvent(FriendMessageEvent event) {
         if (event.getSender().getId() == MQQid) {
             // 捧哏
@@ -91,5 +94,37 @@ public class QQbotControl {
                     .build()
             );
         }
+    }
+
+    private String getTuringAPIReply(String message) {
+        String endpoint = this.clientProps.getProperty("endpoint");
+        String turingAPIKey = this.clientProps.getProperty("turingAPIKey");
+        String userId = this.clientProps.getProperty("userId");
+        // construct upload data
+        TuringMessageModel.TuringUp upMessaging = new TuringMessageModel.TuringUp();
+        upMessaging.reqType = 0;
+        upMessaging.perception.inputText.text = message;
+        upMessaging.userInfo.apiKey = turingAPIKey;
+        upMessaging.userInfo.userId = userId;
+
+        // convert to json
+        String data = new Gson().toJson(upMessaging);
+        System.out.println(data);
+
+        String response = "";
+        TuringMessageModel.TuringDown downMessaging = new TuringMessageModel.TuringDown();
+
+        try {
+            // perform request
+            response = ClientIOUtils.doPOSTRequest(endpoint, data);
+            Gson gs = new GsonBuilder().disableHtmlEscaping().create();
+            downMessaging = gs.fromJson(response, TuringMessageModel.TuringDown.class);
+            System.out.println(downMessaging.results.get(0).values.text);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // reply
+        return downMessaging.results.get(0).values.text;
     }
 }
