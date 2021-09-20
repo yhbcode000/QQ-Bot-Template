@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ClientIO {
+public class ClientIOUtils {
   /**
    * Performs a GET HTTP request and returns a String with the remote endpoint's reply
    *
@@ -29,8 +29,8 @@ public class ClientIO {
 
     BufferedReader in = new BufferedReader(
       new InputStreamReader(conn.getInputStream()));
-    StringBuffer response = new StringBuffer();
-    String output = null;
+    StringBuilder response = new StringBuilder();
+    String output;
 
     while ((output = in.readLine()) != null) {
       response.append(output);
@@ -69,8 +69,8 @@ public class ClientIO {
 
     BufferedReader in = new BufferedReader(new InputStreamReader(
         (conn.getInputStream())));
-    StringBuffer response = new StringBuffer();
-    String output = null;
+    StringBuilder response = new StringBuilder();
+    String output;
 
     while ((output = in.readLine()) != null) {
       response.append(output);
